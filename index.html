@@ -1,0 +1,1434 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>We Are Reasonable People</title>
+
+  <!-- Tailwind CSS (via CDN for standalone usage) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Custom Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <style>
+    :root {
+      --brand-blue: #2F6BFF;
+      --brand-black: #000000;
+      --brand-gray: #F4F4F4;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      background-color: white;
+      overflow-x: hidden;
+    }
+
+    .swiss-grid-border {
+      border-color: rgba(0, 0, 0, 0.1);
+    }
+
+    ::selection {
+      background: var(--brand-blue);
+      color: white;
+    }
+
+    /* Animations for Plasma Layers - MODERN & FAST */
+    @keyframes plasma-move-1 {
+      0% {
+        transform: translate(0, 0) scale(1) rotate(0deg);
+      }
+
+      33% {
+        transform: translate(100px, -50px) scale(1.4) rotate(20deg);
+      }
+
+      66% {
+        transform: translate(-50px, 80px) scale(0.8) rotate(-10deg);
+      }
+
+      100% {
+        transform: translate(0, 0) scale(1) rotate(0deg);
+      }
+    }
+
+    @keyframes plasma-move-2 {
+      0% {
+        transform: translate(0, 0) scale(1) rotate(0deg);
+      }
+
+      50% {
+        transform: translate(-120px, 60px) scale(1.3) rotate(-20deg);
+      }
+
+      100% {
+        transform: translate(0, 0) scale(1) rotate(0deg);
+      }
+    }
+
+
+    /* Faster durations for modern feel */
+    .animate-plasma-1 {
+      animation: plasma-move-1 12s ease-in-out infinite;
+    }
+
+    .animate-plasma-2 {
+      animation: plasma-move-2 9s ease-in-out infinite;
+    }
+
+    /* POKEMON CARD EFFECT STYLES */
+    .poke-card-container {
+      perspective: 1000px;
+      transform-style: preserve-3d;
+    }
+
+    .poke-card {
+      transition: transform 0.1s ease-out, box-shadow 0.3s ease;
+      transform: rotateY(var(--ry, 0deg)) rotateX(var(--rx, 0deg));
+      transform-style: preserve-3d;
+      will-change: transform;
+      background-color: #1a1a1a;
+    }
+
+    .poke-card-container:hover .poke-card {
+      box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.5);
+    }
+
+    /* RADIANT HOLOFOIL EFFECT */
+    .poke-card-radiant {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 40;
+      opacity: var(--o, 0);
+      mix-blend-mode: color-dodge;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+
+      background-image:
+        url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNiIgaGVpZ2h0PSI2IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxwYXRoIGQ9Ik01IDB2Nkg0VjB6bTEgNXYxSDVWMXoiIGZpbGw9IiMwMDAiIGZpbGwtb3BhY2l0eT0iLjEiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg=="),
+        url("data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAwIDIwMCIgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJz48ZmlsdGVyIGlkPSdub2lzZUZpbHRlcic+PGZlVHVyYnVsZW5jZSB0eXBlPSdmcmFjdGFsTm9pc2UnIGJhc2VGcmVxdWVuY3k9JzAuNjUnIG51bU9jdGF2ZXM9JzMnIHN0aXRjaFRpbGVzPSdzdGl0Y2gnLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0nMTAwJScgaGVpZ2h0PScxMDAlJyBmaWx0ZXI9J3VybCgjbm9pc2VGaWx0ZXIpJy8+PC9zdmc+"),
+        linear-gradient(105deg,
+          transparent 20%,
+          rgba(255, 0, 180, 0.5) 30%,
+          rgba(0, 255, 255, 0.5) 45%,
+          rgba(255, 255, 0, 0.5) 60%,
+          transparent 80%);
+
+      background-size: 6px 6px, 200px 200px, 300% 300%;
+      background-position: center center, center center, var(--bg-x) var(--bg-y);
+      background-blend-mode: overlay, overlay, normal;
+      filter: brightness(1.3) contrast(1.2);
+    }
+
+    .poke-card-glare {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(farthest-corner circle at var(--mx, 50%) var(--my, 50%),
+          rgba(255, 255, 255, 0.5) 0%,
+          rgba(255, 255, 255, 0) 60%);
+      opacity: var(--o, 0);
+      mix-blend-mode: overlay;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      z-index: 50;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+
+  <!-- React Application Logic -->
+  <script type="module">
+    import React, { useState, useEffect, useRef } from 'https://esm.sh/react@18.2.0';
+    import { createRoot } from 'https://esm.sh/react-dom@18.2.0/client';
+    import { ArrowRight, Menu, X, ArrowUpRight, Plus, Mail, Globe } from 'https://esm.sh/lucide-react@0.263.1';
+    import * as THREE from 'https://esm.sh/three@0.154.0';
+
+    // ----------------------------------------------------------------------
+    // 1. THE "HEADLESS" CONTENT (CMS DATA)
+    // ----------------------------------------------------------------------
+    const cmsData = {
+      "global": {
+        "siteName": "wearereasonablepeople",
+        "contactEmail": "info@wearereasonablepeople.com",
+        "address": {
+          "en": "Adriaan Volkerhuis (15th floor)\nOostmaaslaan 71\n3063 AN Rotterdam\nThe Netherlands",
+          "nl": "Adriaan Volkerhuis (15e verdieping)\nOostmaaslaan 71\n3063 AN Rotterdam\nNederland",
+          "de": "Adriaan Volkerhuis (15. Stock)\nOostmaaslaan 71\n3063 AN Rotterdam\nNiederlande",
+          "zh": "Adriaan Volkerhuis (15楼)\nOostmaaslaan 71\n3063 AN 鹿特丹\n荷兰"
+        },
+        "socials": [
+          { "label": "LinkedIn", "url": "#" },
+          { "label": "Instagram", "url": "#" }
+        ]
+      },
+      "navigation": [
+        {
+          "label": { "en": "Services", "nl": "Diensten", "de": "Leistungen", "zh": "服务" },
+          "href": "#services"
+        },
+        {
+          "label": { "en": "Work", "nl": "Werk", "de": "Arbeit", "zh": "案例" },
+          "href": "#work",
+          "megaMenu": [
+            {
+              "client": "Re:Ply (AI)",
+              "title": { "en": "AI-driven responses", "nl": "AI-gestuurde reacties" },
+              "image": "./Reply.png",
+            },
+            {
+              "client": "Smart sailing",
+              "title": { "en": "For e-ferries", "nl": "Voor e-veerboten" },
+              "image": "./Smart sailing.png",
+            },
+            {
+              "client": "Driving delight",
+              "title": { "en": "Command", "nl": "Command" },
+              "image": "./Lightyear.jpg",
+            }
+          ]
+        },
+        {
+          "label": { "en": "Insights", "nl": "Inzichten", "de": "Einblicke", "zh": "洞察" },
+          "href": "#insights",
+          "megaMenu": [
+            {
+              "client": "Rogue Data",
+              "title": { "en": "Data ethics", "nl": "Data-ethiek" },
+              "image": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=600"
+            },
+            {
+              "client": "Empathy",
+              "title": { "en": "Please, stop empathising!", "nl": "Stop met empathiseren!" },
+              "image": "https://images.unsplash.com/photo-1516575334481-f85287c2c81d?auto=format&fit=crop&q=80&w=600"
+            },
+            {
+              "client": "Strategy",
+              "title": { "en": "Map your way out", "nl": "Bepaal je route" },
+              "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=600"
+            }
+          ]
+        },
+        {
+          "label": { "en": "About us", "nl": "Over ons", "de": "Über uns", "zh": "关于我们" },
+          "href": "#about"
+        },
+        {
+          "label": { "en": "Careers", "nl": "Werken bij", "de": "Karriere", "zh": "加入我们" },
+          "href": "#careers"
+        },
+        {
+          "label": { "en": "Contact", "nl": "Contact", "de": "Kontakt", "zh": "联系" },
+          "href": "#contact"
+        }
+      ],
+      "projects": {
+        "reply": {
+          "client": "WARP",
+          "title": "Re:Ply (AI)",
+          "category": "AI & Automation",
+          // Using Lightyear image as placeholder until you add 'reply.jpg'
+          "heroImage": "./Reply.png",
+          "takeaways": [
+            { "number": "01", "text": "The ultimate email assistant" },
+            { "number": "02", "text": "Creates tailored email responses, taking care of business rules and operations" },
+            { "number": "03", "text": "Seamlessly integrated into your workflow" }
+          ],
+          "challenge": {
+            "en": "Managing email is a daily struggle for many organisations. Every day, inboxes overflow with customer requests, procedural questions, and status updates. Responding takes time and energy — especially when the information needed is scattered across documents, systems, and teams.We set out to change that.",
+            "nl": "Klantenserviceteams verdronken in repetitieve vragen..."
+          },
+          "approach": {
+            "en": "We didn’t want to create yet another tool people would forget to use. Instead, we designed our agent to be integrated into the heart of your operations: for example Outlook or Google mail.\n\nThe idea? Make it ridiculously easy to surface the right answer from the right documents, without ever leaving your inbox. No chatbot small talk. No digging.",
+            "nl": "We wilden niet nog een tool maken die mensen zouden vergeten..."
+          },
+          "solution": {
+            "en": "Our AI mail agent nests within Outlook, or whatever alternative you like to use. It analyses incoming questions on demand, and creates intricate answers, including references and quotations from related documents if needed. It’s like a superpower for your inbox.\n\nJust select the questions and the add-on offers a reply. It includes a link to the source, so there’s no guessing game. You can edit it, send it, or ignore it. Either way, the heavy lifting’s done.\n\nThe result? Faster replies, an efficient process, happy clients and more time for the work that really matters.",
+            "nl": "We bouwden een contextbewuste AI-agent..."
+          }
+        },
+        "smart-sailing": {
+          "client": "Damen",
+          "title": "Smart sailing",
+          "category": "Maritime Tech",
+          "heroImage": "./Smart sailing.png",
+          "takeaways": [
+            { "number": "01", "text": "A 'ghost ship' visualisation to coach captains" },
+            { "number": "02", "text": "Inspired by the gaming industry" },
+            { "number": "03", "text": "Happy sailors, happy business" }
+          ],
+          "challenge": {
+            "en": "What if captains could see into the future? Damen Shipyards, a recognized shipbuilder and maritime innovator, set out to make that a reality—at least when it comes to battery efficiency.\n\nTheir electric ferries had the potential for smarter, more sustainable operations, but captains faced a unique challenge: managing power consumption, navigating dynamic sailing conditions and keeping schedules on track.\n\nThat required a fresh and reasonable perspective.",
+            "nl": "Elektrische veerboten moeten batterijgebruik optimaliseren..."
+          },
+          "approach": {
+            "en": "We brought together designers, data scientists, and developers to explore how real-time data could support captains. By integrating information from the ferry timetables, charging stops, water currents, traffic, and navigation rules, we developed a Battery Widget that enables captains to make precise, well-timed adjustments.\n\n The result? A proof of concept (POC) designed for clarity and ease of use—helping captains optimize energy efficiency without compromising their autonomy.",
+            "nl": "We brachten dagen door op de brug met kapiteins..."
+          },
+          "solution": {
+            "en": "At the core of our solution is the ‘ghost ship’, a virtual reference that makes battery efficiency an integral part of navigation. Inspired by the gaming industry, we introduced a smart display that blends clear visual cues with live performance data, encouraging small but impactful refinements while staying on course. But the impact goes beyond navigation. Optimized energy use allows for more frequent yet shorter charging cycles, lowering operational costs and extending battery lifespan—ensuring a more efficient, cost-effective, and future-proof eFerry operation.\n\nNow, isn’t that reasonable?",
+            "nl": "Een dashboardinterface die energieverbruik in realtime visualiseert..."
+          }
+        },
+        "driving-delight": {
+          "client": "Lightyear",
+          "title": "Driving delight",
+          "category": "Command",
+          "heroImage": "./Lightyear.jpg",
+          "takeaways": [
+            { "number": "01", "text": "Redefining in-car experience" },
+            { "number": "02", "text": "Intuitive navigation" },
+            { "number": "03", "text": "Unique yet fully compliant" }
+          ],
+          "challenge": {
+            "en": "Lightyear set out to build a radically different electric vehicle—one featuring solar panels. Guided by their “less is more” design philosophy, both the exterior and interior styling were already in place. However, the dashboard and infotainment system posed an entirely new set of challenges: countless regulations, strict hardware limitations, and the need to adopt familiar consumer tech interaction patterns for drivers.\n\nNot to mention changing existing perceptions of electric vehicles, such as the fear of running out of charge.\n\nLightyear sought experts from beyond the traditional automotive sphere—enter our team. We joined at the early concept stage, tasked with reconciling minimalism, safety, and a seamless user experience for the dashboard and infotainment interfaces, while fully integrating the innovative solar technology Lightyear brought to the table.",
+            "nl": "Lightyear wilde een radicaal ander elektrisch voertuig bouwen..."
+          },
+          "approach": {
+            "en": "We began by dissecting the labyrinth of European, international, and national regulations essential for vehicle displays. Through rigorous interaction design, we ensured that mandatory warning icons, colors, and sizes were integrated seamlessly into a system that still felt intuitive. After exhaustive mapping, we identified the bare minimum space required for legal compliance and then layered in user-friendly flows, step by step.\n\nWith the regulatory foundations set, our team iterated on screen layouts and hardware choices. Starting with simple sketches we balanced creative freedom with the realities of mandatory icons and Apple CarPlay/Android Auto compatibility. Meanwhile, we delved into touchscreen specifications and the physical ‘pads’ on the steering wheel, exploring everything from simple volume controls to advanced multi-gesture inputs.\n\nBeyond these necessities, we focused on how this vehicle would differ from any other electric vehicle. Thanks to its solar panels, range anxiety and trip planning were less of a concern. But how do you translate the generated power into the UI? In close collaboration with the data science team, we created a unit called the “Solar Kilometer.” Ultimately, our collective goal was to craft a cohesive in-car experience that felt both innovative and immediately approachable.",
+            "nl": "We begonnen met het ontleden van het labyrint..."
+          },
+          "solution": {
+            "en": "We delivered a set of interface designs ready to transition into a full pre-production phase. Our approach demonstrated how minimalism could coexist with robust technical requirements and regulatory compliance. By grounding every design choice in real user needs—and continuously testing assumptions with prototypes—we shaped an interface philosophy that stands apart from traditional automotive UI.\n\nInnovative features such as the Solar Kilometer helped users see how they were actively increasing their range while driving, minimizing range anxiety. Meanwhile, integrations such as a personal calendar allowed the car to assist drivers in finding the perfect spot to park for optimal solar charging during daily activities.\n\nWe’re proud that our groundwork set the stage for a next-generation EV experience. Our insights on screen layouts, gesture interactions, and regulatory constraints gave Lightyear a strong foundation for a vehicle interface that feels both familiar and intuitive—while rigorously meeting the demands of modern electric mobility.",
+            "nl": "We leverden een set interface-ontwerpen op..."
+          }
+        }
+
+      },
+      "page": {
+        "sections": [
+          {
+            "type": "HeroCarousel",
+            "id": "hero-video",
+            "content": {
+              "mode": "video",
+              "video": "./G009_C014_UHD_SDR_2K_AVC.mov",
+              "animationType": "plasma-ball",
+              "headline": {
+                "en": "The Flow Agency",
+                "nl": "Het Flow Bureau",
+                "de": "Die Flow Agentur",
+                "zh": "心流机构"
+              },
+              "subheadline": {
+                "en": "We create digital solutions that fit like a charm, aligning people, technology and AI. Beyond the hype and into the flow - for those who want to make a dent or two.",
+                "nl": "Wij creëren digitale oplossingen die perfect passen, waarbij mens, technologie en AI op één lijn komen. Voorbij de hype en in de flow - voor wie echt impact wil maken.",
+                "de": "Wir entwickeln digitale Lösungen, die perfekt passen und Menschen, Technologie und KI in Einklang bringen. Jenseits des Hypes und hinein in den Flow.",
+                "zh": "我们创造完美契合的数字解决方案，让人类、技术和人工智能保持一致。超越炒作，进入心流——为那些想要有所作为的人。"
+              },
+              "ctaText": {
+                "en": "View our services",
+                "nl": "Bekijk onze diensten",
+                "de": "Unsere Leistungen",
+                "zh": "查看我们的服务"
+              },
+              "ctaLink": "#services"
+            }
+          },
+          {
+            "type": "ServicesOverview",
+            "id": "intro",
+            "backgroundColors": ["#88FFCC", "#FFFFFF", "#CCFFFF"],
+            "content": {
+              "label": { "en": "Services", "nl": "Diensten", "de": "Leistungen", "zh": "服务" },
+              "headline": {
+                "en": "So what do we do exactly?",
+                "nl": "Wat doen we precies?",
+                "de": "Was machen wir genau?",
+                "zh": "我们具体做什么？"
+              },
+              "description": {
+                "en": "The days of building apps in splendid isolation are gone; today it's all about understanding context and relations. We do digital from strategy to code, ensuring we'll never build in a vacuum.",
+                "nl": "De dagen van apps bouwen in isolatie zijn voorbij; vandaag draait alles om context en relaties. Wij doen digitaal van strategie tot code, zodat we nooit in een vacuüm bouwen.",
+                "de": "Die Zeiten, in denen Apps isoliert entwickelt wurden, sind vorbei. Wir machen Digitales von der Strategie bis zum Code.",
+                "zh": "孤立构建应用程序的日子已经一去不复返了；今天是关于理解背景和关系。我们从事从战略到代码的数字化工作，确保永远不会在真空中构建。"
+              }
+            }
+          },
+          {
+            "type": "ServicesSections",
+            "id": "services",
+            "content": {
+              "items": [
+                {
+                  "title": { "en": "Explore & Prepare", "nl": "Explore & Prepare", "de": "Erforschen & Vorbereiten", "zh": "探索与准备" },
+                  "description": {
+                    "en": "We explore digital opportunities and prepare your company to make it happen.",
+                    "nl": "We verkennen digitale kansen en bereiden uw bedrijf voor om ze te realiseren.",
+                    "de": "Wir erkunden digitale Möglichkeiten und bereiten Ihr Unternehmen darauf vor.",
+                    "zh": "我们探索数字机遇并让您的公司做好实现的准备。"
+                  },
+                  "tags": ["Strategy", "Innovation"],
+                  "colors": ["#E0C3FC", "#8EC5FC", "#C2E9FB"],
+                  "colorsSecondary": ["#4338ca", "#6366f1", "#a855f7"]
+                },
+                {
+                  "title": { "en": "Command", "nl": "Command", "de": "Steuerung", "zh": "掌控" },
+                  "description": {
+                    "en": "So we design and build applications and interfaces, that put humans firmly back in control.",
+                    "nl": "We ontwerpen en bouwen applicaties en interfaces die mensen weer de controle geven.",
+                    "de": "Wir entwerfen Anwendungen und Schnittstellen, die den Menschen wieder die Kontrolle geben.",
+                    "zh": "因此，我们设计和构建应用程序和界面，让人类重新牢牢掌握控制权。"
+                  },
+                  "tags": ["UX/UI", "Development"],
+                  "colors": ["#84fab0", "#8fd3f4", "#a1c4fd"],
+                  "colorsSecondary": ["#0f766e", "#115e59", "#047857"]
+                },
+                {
+                  "title": { "en": "Assist", "nl": "Assist", "de": "Assistenz", "zh": "辅助" },
+                  "description": {
+                    "en": "We leverage AI and other transformative technologies to take you to new heights.",
+                    "nl": "We benutten AI en andere transformatieve technologieën om u naar nieuwe hoogten te brengen.",
+                    "de": "Wir nutzen KI und andere Technologien, um Sie auf neue Höhen zu bringen.",
+                    "zh": "我们利用人工智能和其他变革性技术将您带向新的高度。"
+                  },
+                  "tags": ["AI", "Data Science"],
+                  "colors": ["#fddb92", "#fff1eb", "#f6d365"],
+                  "colorsSecondary": ["#c2410c", "#9a3412", "#ea580c"]
+                }
+              ]
+            }
+          },
+          {
+            "type": "SectionWorkWrapper",
+            "id": "work",
+            "backgroundColors": ["#FF8888", "#88AAFF", "#FFDD88"],
+            "content": {
+              "label": { "en": "Work", "nl": "Werk", "de": "Arbeit", "zh": "案例" },
+              "headline": { "en": "The work we're doing", "nl": "Het werk dat we doen", "de": "Unsere Projekte", "zh": "我们的作品" },
+              "linkText": { "en": "All recent work", "nl": "Al het recente werk", "de": "Alle Projekte", "zh": "所有近期作品" },
+              "cards": [
+                {
+                  "component": "CardBig",
+                  "client": "Lightyear",
+                  "title": { "en": "Driving delight", "nl": "Rijplezier", "de": "Fahrvergnügen", "zh": "驾驶乐趣" },
+                  "media": "./Lightyear.jpg",
+                },
+                {
+                  "component": "CardSmall",
+                  "client": "Fugro",
+                  "title": { "en": "Geo-data redefined", "nl": "Geo-data herdefinieerd", "de": "Geo-Daten neu definiert", "zh": "重新定义地理数据" },
+                  "media": "https://images.unsplash.com/photo-1569263979104-865ab7cd8d13?auto=format&fit=crop&q=80&w=800"
+                },
+                {
+                  "component": "CardSmall",
+                  "client": "Damen",
+                  "title": { "en": "Smart sailing", "nl": "Slim varen", "de": "Intelligentes Segeln", "zh": "智慧航行" },
+                  "media": "https://images.unsplash.com/photo-1559302995-30402eb4d312?auto=format&fit=crop&q=80&w=800"
+                },
+                {
+                  "component": "CardBig",
+                  "client": "Versuni",
+                  "title": { "en": "Comfortably safe", "nl": "Comfortabel veilig", "de": "Komfortabel sicher", "zh": "舒适安全" },
+                  "media": "https://images.unsplash.com/photo-1585435465945-bef5a93f88a9?auto=format&fit=crop&q=80&w=1200"
+                }
+              ]
+            }
+          },
+          {
+            "type": "BigNumberList",
+            "id": "stats",
+            "content": {
+              "label": { "en": "About Us", "nl": "Over Ons", "de": "Über Uns", "zh": "关于我们" },
+              "headline": { "en": "We go together.", "nl": "We gaan samen.", "de": "Wir gehen gemeinsam.", "zh": "我们将一同前行。" },
+              "items": [
+                { "number": "10+", "label": { "en": "Years Experience", "nl": "Jaar Ervaring", "de": "Jahre Erfahrung", "zh": "多年经验" } },
+                { "number": "50+", "label": { "en": "Digital Experts", "nl": "Digitale Experts", "de": "Digitale Experten", "zh": "数字专家" } },
+                { "number": "100%", "label": { "en": "Human Centered", "nl": "Mensgericht", "de": "Menschenzentriert", "zh": "以人为本" } },
+                { "number": "3", "label": { "en": "Core Disciplines", "nl": "Kerndisciplines", "de": "Kerndisziplinen", "zh": "核心学科" } }
+              ]
+            }
+          },
+          {
+            "type": "NewsletterBlock",
+            "id": "newsletter",
+            "content": {
+              "headline": { "en": "Stay in the flow.", "nl": "Blijf in de flow.", "de": "Bleiben Sie im Flow.", "zh": "保持心流。" },
+              "subheadline": {
+                "en": "Receive our latest insights and news directly in your inbox.",
+                "nl": "Ontvang onze laatste inzichten en nieuws direct in je inbox.",
+                "de": "Erhalten Sie unsere neuesten Erkenntnisse direkt in Ihren Posteingang.",
+                "zh": "直接在您的收件箱中接收我们的最新见解和新闻。"
+              },
+              "placeholder": { "en": "Enter your email", "nl": "Vul je email in", "de": "E-Mail eingeben", "zh": "输入您的电子邮件" },
+              "button": { "en": "Subscribe", "nl": "Inschrijven", "de": "Abonnieren", "zh": "订阅" }
+            }
+          },
+          {
+            "type": "Footer",
+            "id": "footer",
+            "content": {
+              "headline": { "en": "Let's make the future together.", "nl": "Laten we samen de toekomst maken.", "de": "Lassen Sie uns die Zukunft gestalten.", "zh": "让我们共同创造未来。" },
+              "subheadline": { "en": "Want to work on making the world a better place?", "nl": "Wil je werken aan een betere wereld?", "de": "Wollen Sie die Welt verbessern?", "zh": "想致力于让世界变得更美好吗？" },
+              "primaryBtn": { "en": "Get in touch", "nl": "Neem contact op", "de": "Kontakt aufnehmen", "zh": "取得联系" },
+              "secondaryBtn": { "en": "Join us", "nl": "Werken bij", "de": "Karriere", "zh": "加入我们" }
+            }
+          }
+        ]
+      }
+    };
+
+    // ----------------------------------------------------------------------
+    // 2. HELPERS & UI PRIMITIVES
+    // ----------------------------------------------------------------------
+
+    const t = (content, lang) => {
+      if (!content) return "";
+      if (typeof content === 'string') return content;
+      return content[lang] || content['en'] || "";
+    };
+
+    const Reveal = ({ children }) => {
+      const ref = useRef(null);
+      const [isVisible, setIsVisible] = useState(false);
+
+      useEffect(() => {
+        const timer = setTimeout(() => {
+          if (!isVisible) setIsVisible(true);
+        }, 1000);
+
+        const observer = new IntersectionObserver(([entry]) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+          } else {
+            setIsVisible(false);
+          }
+        }, { threshold: 0.1 });
+
+        if (ref.current) observer.observe(ref.current);
+
+        return () => {
+          observer.disconnect();
+          clearTimeout(timer);
+        };
+      }, []);
+
+      return React.createElement("div", {
+        ref: ref,
+        className: `transform transition-all duration-[800ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-20'}`
+      }, children);
+    };
+
+    const WarpLogo = ({ className }) => React.createElement("svg", { className, xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 144 144" },
+      React.createElement("g", { "data-name": "Layer 2" },
+        React.createElement("g", { "data-name": "Layer 1" },
+          React.createElement("rect", { fill: "#f02300", width: "144", height: "144" }),
+          React.createElement("path", { fill: "#fff", d: "M86,111.91A5.51,5.51,0,0,1,81.14,109L70.39,90.52,59.58,109A5.22,5.22,0,0,1,55,111.72H55A5.36,5.36,0,0,1,50.3,109l-.07-.13L25,56.3a7.74,7.74,0,0,1,5.39-11.46L111,32.21A7.74,7.74,0,0,1,119.33,43l-28.6,65.89a5,5,0,0,1-4.52,3H86M72.46,87l11.79,20.27a2,2,0,0,0,1.83,1.1,1.54,1.54,0,0,0,1.38-.91l28.6-65.89a4.17,4.17,0,0,0-4.51-5.81L31,48.36a4.17,4.17,0,0,0-2.86,6.21l.07.13,25.2,52.59a1.83,1.83,0,0,0,1.56.86h0a1.68,1.68,0,0,0,1.49-.88L68.33,87,56,65.83a5.36,5.36,0,0,1,4.68-8H80.12a5.36,5.36,0,0,1,4.68,8ZM60.71,61.44a1.79,1.79,0,0,0-1.57,2.64L70.39,83.43,81.7,64.07a1.8,1.8,0,0,0-1.58-2.63Z" }),
+          React.createElement("path", { fill: "#fff", d: "M187.84,103.56h9.52v-1.8h-9.52v-6h10.64V94H185.87v17.43H198.6v-1.79H187.84ZM242.61,44.3h5l5.06,6.78h2.41L249.71,44c2.74-.5,4.73-2.19,4.73-5.1,0-3.14-2.47-5.21-6.3-5.21h-7.5V51.08h2Zm0-8.84H248c2.81,0,4.46,1.29,4.46,3.46s-1.87,3.61-4.49,3.61h-5.35Zm28.76,13.82H260.61v-6.1h9.52V41.39h-9.52v-6h10.64V33.64h-12.6V51.08h12.72ZM175.76,94h-6.52v17.43h2V105.3h4.24c3.71,0,6.85-1.94,6.85-5.73,0-3.46-2.59-5.55-6.53-5.55m-.25,9.49H171.2V95.84h4.41c2.82,0,4.69,1.29,4.69,3.81,0,2.31-1.9,3.86-4.79,3.86M183,69c0-3.14-2.47-5.21-6.31-5.21h-7.49V81.26h2V74.49h5l5.05,6.77h2.42l-5.36-7.12C181,73.64,183,72,183,69M171.2,72.72V65.65h5.39c2.81,0,4.45,1.29,4.45,3.46s-1.86,3.61-4.48,3.61Zm39.5,21a9,9,0,1,0,8.87,9,8.84,8.84,0,0,0-8.87-9m0,16.21a6.93,6.93,0,0,1-6.87-7.22,6.86,6.86,0,0,1-6.83-7.17,6.93,6.93,0,0,1-6.87,7.22,6.85,6.85,0,0,1-6.83,7.17m-1.16-60.65H198.77v-6.1h9.52V41.39h-9.52v-6h10.64V33.64h-12.6V51.08h12.73ZM193.25,33.64h-2.07l-5,14.52-4.78-14.57H179.8L175,48.16l-5-14.52h-2.14l6.23,17.56h1.64l4.81-14.15,4.78,14.15H187Zm-4,39.73h9.52V71.58h-9.52v-6h10.64V63.83H187.24V81.26H200V79.47H189.21Zm97.28-9.67-7.94,17.56h2l2.07-4.6h9.49l2,4.6h2.12L288.33,63.7ZM283.4,74.89l4-8.89,4,8.89ZM273.19,77.8l-11-14h-1.84V81.26h1.91V67l11.26,14.29h1.57V63.83h-1.92Zm36.86-5.55a4.23,4.23,0,0,0,2.77-4.06c0-2.67-2.25-4.36-5.68-4.36h-7.43V81.26h7.75c3.81,0,6.33-1.76,6.33-4.78,0-2.41-1.67-3.61-3.74-4.23m-8.39-6.65H307c2.49,0,3.86,1.12,3.86,2.86,0,2.07-1.64,3.14-4,3.14h-5.15Zm5.85,13.9h-5.85V73.34h5.5c3,0,4.64,1.1,4.64,3s-1.65,3.14-4.29,3.14m27.57,0v-6.1h9.51V71.58h-9.51v-6h10.64V63.83H333.11V81.26h12.73V79.47Zm-77.33,24.09h9.51v-1.8h-9.51v-6h10.64V94H255.78v17.43h12.73v-1.79H257.75Zm61.91-39.73h-2V81.26h11.78V79.45h-9.82ZM242.33,94h-2v17.43h11.78v-1.81h-9.82Zm5-30.49a9,9,0,1,0,8.87,9,8.84,8.84,0,0,0-8.87-9m0,16.22a6.94,6.94,0,0,1-6.87-7.23,6.86,6.86,0,0,1-6.82-7.17,6.94,6.94,0,0,1-6.88,7.22,6.86,6.86,0,0,1-6.83,7.18M230.25,94h-6.52v17.43h2V105.3h4.23c3.71,0,6.85-1.94,6.85-5.73,0-3.46-2.59-5.55-6.53-5.55m-.24,9.49H225.7V95.84h4.41c2.81,0,4.68,1.29,4.68,3.81,0,2.31-1.89,3.86-4.78,3.86m-.7-23.76a8.32,8.32,0,0,1-6-2.47l-1.22,1.44a10.19,10.19,0,0,0,7.12,2.79c3.47,0,6-1.94,6-5,0-2.69-1.8-4.11-5.68-5s-4.73-1.74-4.73-3.41,1.44-2.84,3.71-2.84a7.66,7.66,0,0,1,5,1.89l1.14-1.52a9.06,9.06,0,0,0-6.12-2.14c-3.32,0-5.73,2-5.73,4.78s1.84,4.19,5.85,5.06c3.66.77,4.54,1.69,4.54,3.34s-1.55,3-3.89,3m-18.93-16-7.94,17.56h2l2.07-4.6H216l2,4.6h2.12L212.22,63.7Zm-3.09,11.19,4-8.89,4,8.89Zm20.13-41.37-7.95,17.56h2l2.07-4.61h9.49l2,4.61h2.11l-7.94-17.56ZM224.33,44.7l4-8.89,4,8.89Z" })
+        )
+      )
+    );
+    // NEW: The Master Container for perfect alignment
+    // This makes sure the title, image, and text always line up perfectly.
+    const PageWrapper = ({ children, className = "" }) => {
+      return React.createElement("div", {
+        className: `w-full max-w-[1600px] mx-auto px-6 md:px-12 lg:px-[min(5vw,96px)] ${className}`
+      }, children);
+    };
+
+    // NEW: Configurable Plasma Container (Support for Image & Dual Layer Plasma)
+    const PlasmaContainer = ({ colors, colorsSecondary, image, imagePosition = 'back' }) => {
+      if (!colors || colors.length === 0) return null;
+
+      // Reusable Blob Layer Component
+      const BlobLayer = ({ layerColors, opacity, speedClass, mixBlend }) => {
+        return React.createElement("div", { className: `absolute inset-0 ${speedClass} ${opacity} ${mixBlend}` },
+          layerColors.map((color, index) => {
+            const top = index === 0 ? '20%' : index === 1 ? '60%' : '40%';
+            const left = index === 0 ? '20%' : index === 1 ? '70%' : '50%';
+            return React.createElement("div", {
+              key: index,
+              className: `absolute w-[900px] h-[900px] rounded-full mix-blend-multiply filter blur-[80px]`,
+              style: { backgroundColor: color, top, left, transform: 'translate(-50%, -50%)' }
+            });
+          })
+        );
+      };
+
+      return React.createElement("div", { className: "absolute inset-0 overflow-hidden select-none bg-white" },
+        // OPTIONAL IMAGE (BACK POSITION)
+        image && imagePosition === 'back' && React.createElement("img", {
+          src: image,
+          className: "absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-overlay z-0",
+          alt: "Background"
+        }),
+
+        // Layer 1: Background Plasma (Secondary Colors or Darker)
+        colorsSecondary && React.createElement(BlobLayer, {
+          layerColors: colorsSecondary,
+          opacity: "opacity-90",
+          speedClass: "animate-plasma-1",
+          mixBlend: ""
+        }),
+
+        // Layer 2: Foreground Plasma
+        React.createElement(BlobLayer, {
+          layerColors: colors,
+          opacity: "opacity-100",
+          speedClass: "animate-plasma-2",
+          mixBlend: "mix-blend-hard-light"
+        }),
+
+        // OPTIONAL IMAGE (FRONT POSITION)
+        image && imagePosition === 'front' && React.createElement("img", {
+          src: image,
+          className: "absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-soft-light z-20",
+          alt: "Foreground Overlay"
+        })
+      );
+    };
+
+    // ... [Other existing components like ElectricPlasmaBall, MediaItem, etc. stay the same]
+    // Re-defining PlasmaBackground for backward compatibility with Intro & Work sections
+    const PlasmaBackground = ({ colors }) => {
+      return React.createElement(PlasmaContainer, { colors: colors, colorsSecondary: null });
+    };
+
+    const ElectricPlasmaBall = () => {
+      const containerRef = useRef(null);
+      useEffect(() => {
+        let renderer, scene, camera, sphere, animationId;
+        function initThreeJS() {
+          if (!containerRef.current) return;
+          scene = new THREE.Scene();
+          const width = containerRef.current.clientWidth;
+          const height = containerRef.current.clientHeight;
+          camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
+          camera.position.z = 3.5;
+          renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+          renderer.setSize(width, height);
+          renderer.setPixelRatio(window.devicePixelRatio);
+          containerRef.current.appendChild(renderer.domElement);
+          const vertexShader = `
+                varying vec2 vUv; varying vec3 vNormal; varying vec3 vViewPosition;
+                void main() { vUv = uv; vNormal = normalize(normalMatrix * normal); vec4 mvPosition = modelViewMatrix * vec4(position, 1.0); vViewPosition = -mvPosition.xyz; gl_Position = projectionMatrix * mvPosition; }
+              `;
+          const fragmentShader = `
+                uniform float uTime; varying vec2 vUv; varying vec3 vNormal; varying vec3 vViewPosition;
+                vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+                vec4 mod289(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+                vec4 permute(vec4 x) { return mod289(((x*34.0)+1.0)*x); }
+                vec4 taylorInvSqrt(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
+                float snoise(vec3 v) { const vec2 C = vec2(1.0/6.0, 1.0/3.0); const vec4 D = vec4(0.0, 0.5, 1.0, 2.0); vec3 i = floor(v + dot(v, C.yyy)); vec3 x0 = v - i + dot(i, C.xxx); vec3 g = step(x0.yzx, x0.xyz); vec3 l = 1.0 - g; vec3 i1 = min(g.xyz, l.zxy); vec3 i2 = max(g.xyz, l.zxy); vec3 x1 = x0 - i1 + C.xxx; vec3 x2 = x0 - i2 + C.yyy; vec3 x3 = x0 - D.yyy; i = mod289(i); vec4 p = permute(permute(permute(i.z + vec4(0.0, i1.z, i2.z, 1.0)) + i.y + vec4(0.0, i1.y, i2.y, 1.0)) + i.x + vec4(0.0, i1.x, i2.x, 1.0)); float n_ = 0.142857142857; vec3 ns = n_ * D.wyz - D.xzx; vec4 j = p - 49.0 * floor(p * ns.z * ns.z); vec4 x_ = floor(j * ns.z); vec4 y_ = floor(j - 7.0 * x_); vec4 x = x_ * ns.x + ns.yyyy; vec4 y = y_ * ns.x + ns.yyyy; vec4 h = 1.0 - abs(x) - abs(y); vec4 b0 = vec4(x.xy, y.xy); vec4 b1 = vec4(x.zw, y.zw); vec4 s0 = floor(b0)*2.0 + 1.0; vec4 s1 = floor(b1)*2.0 + 1.0; vec4 sh = -step(h, vec4(0.0)); vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy; vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww; vec3 p0 = vec3(a0.xy, h.x); vec3 p1 = vec3(a0.zw, h.y); vec3 p2 = vec3(a1.xy, h.z); vec3 p3 = vec3(a1.zw, h.w); vec4 norm = taylorInvSqrt(vec4(dot(p0, p0), dot(p1, p1), dot(p2, p2), dot(p3, p3))); p0 *= norm.x; p1 *= norm.y; p2 *= norm.z; p3 *= norm.w; vec4 m = max(0.6 - vec4(dot(x0, x0), dot(x1, x1), dot(x2, x2), dot(x3, x3)), 0.0); m = m * m; return 42.0 * dot(m*m, vec4(dot(p0, x0), dot(p1, x1), dot(p2, x2), dot(p3, x3))); }
+                void main() { float noiseVal = snoise(vec3(vNormal * 4.0 + uTime * 0.5)); float electric = 0.05 / abs(noiseVal); vec3 colorBase = vec3(0.0, 0.1, 0.4); vec3 colorBolt = vec3(0.4, 0.8, 1.0); vec3 finalColor = mix(colorBase, colorBolt, electric); vec3 viewDir = normalize(vViewPosition); float fresnel = pow(1.0 - dot(viewDir, vNormal), 3.0); finalColor += vec3(0.2, 0.5, 1.0) * fresnel * 1.5; gl_FragColor = vec4(finalColor, 1.0); }
+              `;
+          const material = new THREE.ShaderMaterial({ uniforms: { uTime: { value: 0 } }, vertexShader: vertexShader, fragmentShader: fragmentShader });
+          const geometry = new THREE.SphereGeometry(1.2, 64, 64);
+          sphere = new THREE.Mesh(geometry, material);
+          scene.add(sphere);
+          const animate = () => { animationId = requestAnimationFrame(animate); sphere.rotation.y += 0.002; sphere.rotation.x += 0.001; material.uniforms.uTime.value += 0.015; renderer.render(scene, camera); };
+          animate();
+        }
+        const handleResize = () => { if (!containerRef.current || !camera || !renderer) return; const width = containerRef.current.clientWidth; const height = containerRef.current.clientHeight; camera.aspect = width / height; camera.updateProjectionMatrix(); renderer.setSize(width, height); };
+        window.addEventListener('resize', handleResize);
+        initThreeJS();
+        return () => { window.removeEventListener('resize', handleResize); if (animationId) cancelAnimationFrame(animationId); if (containerRef.current) containerRef.current.innerHTML = ''; };
+      }, []);
+      return React.createElement("div", { ref: containerRef, className: "w-full h-full bg-black" });
+    };
+
+    const MediaItem = ({ src, alt, className }) => {
+      const isVideo = src.endsWith('.mp4');
+      if (isVideo) return React.createElement("video", { src, className, autoPlay: true, muted: true, loop: true, playsInline: true });
+      return React.createElement("img", { src, alt, className });
+    };
+
+    const MegaMenuCard = ({ item, lang, onNavigate }) => {
+      // 1. Map the client name to our Project IDs
+      let targetId = null;
+      if (item.client === 'Re:Ply (AI)') targetId = 'reply';
+      if (item.client === 'Smart sailing') targetId = 'smart-sailing';
+      if (item.client === 'Driving delight') targetId = 'driving-delight';
+
+      // 2. Handle the click
+      const handleClick = (e) => {
+        e.preventDefault(); // Stop the link from reloading the page
+        if (targetId && onNavigate) {
+          onNavigate(targetId); // Switch the page!
+        }
+      };
+
+      return React.createElement("a", { href: "#", onClick: handleClick, className: "group block" },
+        React.createElement("div", { className: "overflow-hidden aspect-video bg-gray-100 mb-3" },
+          React.createElement("img", {
+            src: item.image,
+            alt: item.client,
+            className: "w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          })
+        ),
+        React.createElement("div", null,
+          React.createElement("p", { className: "text-base font-medium text-black tracking-[0.01em] leading-snug group-hover:text-[var(--brand-blue)] transition-colors" },
+            item.client
+          )
+        )
+      );
+    };
+
+    // ----------------------------------------------------------------------
+    // NAVBAR + MEGA MENU
+    // - Top sticky nav bar (logo + links + hamburger)
+    // - Desktop mega menu (for items with `megaMenu`, e.g. Work, Insights)
+    // - Mobile full-screen slide-in menu
+    // ----------------------------------------------------------------------
+    const NavbarNew = ({ items, siteName, currentLang, setLang, onNavigate, isDark, activePage }) => {
+      const [isOpen, setIsOpen] = useState(false);
+      const [scrolled, setScrolled] = useState(false);
+      const [hoveredItem, setHoveredItem] = useState(null);
+
+      useEffect(() => {
+        const handleScroll = () => {
+          const h1 = document.querySelector('h1');
+          if (h1) {
+            const rect = h1.getBoundingClientRect();
+            setScrolled(rect.top < 150);
+          } else {
+            setScrolled(window.scrollY > 50);
+          }
+        };
+        handleScroll();
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+      }, []);
+
+      const highlightHrefs = new Set(['#services', '#work', '#insights']);
+      const isMenuOpen = hoveredItem?.megaMenu;
+      // If menu is open, force background white and text black
+      const isSolid = scrolled || (hoveredItem && highlightHrefs.has(hoveredItem.href));
+      const textShouldBeBlack = isSolid || isMenuOpen || isDark;
+
+      const navBackground =
+        isSolid && !isMenuOpen
+          ? 'bg-white/50 backdrop-blur-xl border-b border-black/5 shadow-sm'
+          : 'bg-transparent';
+
+      return React.createElement(
+        React.Fragment,
+        null,
+
+        // =============================
+        // DESKTOP NAV BAR
+        // =============================
+        React.createElement(
+          'nav',
+          {
+            className: `fixed top-0 w-full z-50 transition-all duration-300 ${navBackground}`,
+            onMouseLeave: () => {
+              setHoveredItem(null);
+            },
+          },
+
+          // TOP ROW: Logo + Links + Hamburger
+          React.createElement(
+            'div',
+            {
+              // FLUID ALIGNMENT: 
+              // matches the PageWrapper: 5vw padding until it hits 96px.
+              className:
+                "relative z-50 w-full pt-8 pb-4 flex justify-between items-center px-6 md:px-12 lg:px-[min(5vw,96px)]",
+            },
+            React.createElement(
+              'a',
+              {
+                href: '#',
+                onClick: (e) => {
+                  e.preventDefault();
+                  onNavigate('home');
+                },
+                className: 'block',
+              },
+              React.createElement(WarpLogo, { className: 'h-16 w-16 drop-shadow-sm' })
+            ),
+
+            React.createElement(
+              'div',
+              { className: 'flex items-center gap-6' },
+
+              // DESKTOP LINKS
+              // Visible only on Large (lg) screens and up
+              React.createElement(
+                'div',
+                { className: 'hidden lg:flex items-center gap-1' },
+                items.map((item, i) => {
+                  const isActive = activePage !== 'home' && item.href === '#work';
+                  const borderClass = isActive ? 'border-black' : 'border-transparent';
+
+                  return React.createElement(
+                    'div',
+                    {
+                      key: i,
+                      className: 'relative px-4',
+                      onMouseEnter: () => setHoveredItem(item),
+                    },
+                    React.createElement(
+                      'a',
+                      {
+                        href: item.href,
+                        className: `text-lg font-medium px-0 py-1 border-b-2 ${borderClass} block ${item.highlight
+                          ? 'text-black'
+                          : textShouldBeBlack
+                            ? 'text-gray-900'
+                            : 'text-[#F6F6F6]'
+                          } ${textShouldBeBlack ? 'hover:border-black' : 'hover:border-white'
+                          }`,
+                      },
+                      t(item.label, currentLang)
+                    )
+                  );
+                })
+              ),
+
+              // MOBILE HAMBURGER BUTTON
+              // Visible on screens smaller than Large (lg)
+              React.createElement(
+                'button',
+                {
+                  onClick: () => setIsOpen(!isOpen),
+                  className: `lg:hidden p-2 ${textShouldBeBlack ? 'text-black' : 'text-white'
+                    }`,
+                },
+                isOpen
+                  ? React.createElement(X, { className: 'w-8 h-8' })
+                  : React.createElement(Menu, { className: 'w-8 h-8' })
+              )
+            )
+          ),
+
+          // =============================
+          // DESKTOP MEGA MENU PANEL
+          // =============================
+          React.createElement(
+            'div',
+            {
+              className: `absolute top-0 left-0 w-full bg-white shadow-xl transition-all duration-300 overflow-hidden -z-10 ${isMenuOpen
+                ? 'opacity-100 visible'
+                : 'opacity-0 invisible pointer-events-none'
+                }`,
+              style: { maxHeight: isMenuOpen ? '800px' : '0' },
+            },
+            React.createElement(
+              'div',
+              {
+                // FLUID PADDING: Matches Top Row exactly
+                className:
+                  'w-full max-w-[1600px] mx-auto pt-32 pb-12 px-6 md:px-12 lg:px-[min(5vw,96px)]',
+              },
+              isMenuOpen &&
+              React.createElement(
+                'div',
+                { className: 'grid grid-cols-12 gap-6 w-full' },
+
+                // LEFT COLUMN: Headline + Button
+                // Spans 4 columns (approx 33%)
+                React.createElement(
+                  'div',
+                  { className: 'col-span-12 lg:col-span-4 flex flex-col justify-between items-start pr-12' },
+                  React.createElement(
+                    'div',
+                    null,
+                    React.createElement(
+                      'h3',
+                      {
+                        className:
+                          'text-4xl font-semibold tracking-tight leading-tight text-black mb-8',
+                      },
+                      hoveredItem.label['en'] === 'Work'
+                        ? 'The work we’re doing.'
+                        : 'Sharing opinions, ideas and knowledge.'
+                    ),
+                    React.createElement(
+                      'a',
+                      {
+                        href: hoveredItem.href,
+                        className:
+                          'group inline-flex items-center justify-center px-8 py-4 bg-[#39aa59] text-white text-lg font-semibold rounded-none transition-all duration-200 hover:shadow-[inset_0_0_0_1px_#39aa59,inset_0_0_0_4px_#E0E0E0]',
+                      },
+                      React.createElement(
+                        'span',
+                        null,
+                        hoveredItem.label['en'] === 'Work'
+                          ? 'All recent work'
+                          : 'All our news'
+                      ),
+                      React.createElement(ArrowRight, { className: 'ml-4 w-5 h-5' })
+                    )
+                  )
+                ),
+
+                // RIGHT COLUMN: Cards Container
+                // Spans 8 columns (approx 66%) - FLUID WIDTH
+                React.createElement(
+                  'div',
+                  {
+                    // No max-width here! It fills the 8 grid columns.
+                    // 'flex justify-end' ensures if the content is small, it sticks right, 
+                    // but the grid w-full inside ensures cards grow.
+                    className: 'col-span-12 lg:col-span-8 flex justify-end items-start',
+                  },
+                  React.createElement(
+                    'div',
+                    {
+                      // Inner Grid: 3 columns, gap-6 (24px) to match inspection.
+                      className: 'grid grid-cols-3 gap-6 w-full',
+                    },
+                    hoveredItem.megaMenu.map((caseItem, idx) =>
+                      React.createElement(MegaMenuCard, {
+                        key: idx,
+                        item: caseItem,
+                        lang: currentLang,
+                        onNavigate: (id) => {
+                          setHoveredItem(null);
+                          onNavigate(id);
+                        },
+                      })
+                    )
+                  )
+                )
+              )
+            )
+          )
+        ),
+
+        // =============================
+        // MOBILE SLIDE-IN MENU
+        // =============================
+        React.createElement(
+          'div',
+          {
+            className: `fixed inset-0 bg-white z-40 flex flex-col justify-center px-12 transition-transform duration-500 ${isOpen ? 'translate-x-0' : 'translate-x-full'
+              }`,
+          },
+          items.map((item, i) =>
+            React.createElement(
+              'a',
+              {
+                key: i,
+                href: item.href,
+                onClick: () => {
+                  setIsOpen(false);
+                  if (item.href === '#work') onNavigate('home');
+                },
+                className:
+                  'text-3xl font-bold py-4 border-b swiss-grid-border hover:text-[var(--brand-blue)] transition-colors',
+              },
+              t(item.label, currentLang)
+            )
+          )
+        )
+      );
+    };
+
+
+
+
+    const HeroCarousel = ({ content, lang }) => {
+      return React.createElement("section", { className: "w-full h-[90vh] md:h-screen relative overflow-hidden bg-black" },
+        content.mode === 'video' && content.video && React.createElement("video", { src: content.video, autoPlay: true, muted: true, loop: true, playsInline: true, className: "absolute inset-0 w-full h-full object-cover opacity-70" }),
+        content.mode === 'animation' && React.createElement(ElectricPlasmaBall, null),
+        content.mode === 'video' && React.createElement("div", { className: "absolute inset-0 bg-black/30 z-10" }),
+        content.headline && React.createElement("div", { className: "absolute inset-0 z-20 flex flex-col justify-center items-center px-6 md:px-12 pt-20 pointer-events-none text-center" },
+          React.createElement("div", { className: "max-w-[90vw] pointer-events-auto flex flex-col items-center" },
+            React.createElement("h1", { className: "text-5xl md:text-[80px] lg:text-8xl font-semibold tracking-tight leading-[0.9] mb-10 md:mb-12 text-white whitespace-pre-line drop-shadow-2xl" }, t(content.headline, lang)),
+            React.createElement("p", { className: "text-lg md:text-2xl md:leading-9 font-medium text-gray-200 tracking-[0.01em] max-w-[680px] mx-auto mb-10 drop-shadow-md" }, t(content.subheadline, lang)),
+            React.createElement("div", { className: "flex justify-center" },
+              React.createElement("a", { href: content.ctaLink, className: "group inline-flex items-center justify-center px-8 py-4 bg-[#39aa59] text-white text-lg font-semibold rounded-none transition-all duration-200 hover:shadow-[inset_0_0_0_1px_#39aa59,inset_0_0_0_4px_#E0E0E0]" },
+                React.createElement("span", null, "Read more"),
+                React.createElement(ArrowRight, { className: "ml-4 w-5 h-5" })
+              )
+            )
+          )
+        )
+      );
+    };
+    const ServicesOverview = ({ content, backgroundColors, lang }) => {
+      return React.createElement("section", { className: "py-32 px-6 md:px-12 relative overflow-hidden" },
+        React.createElement(PlasmaContainer, { colors: backgroundColors }), // USING NEW COMPONENT
+        React.createElement("div", { className: "container mx-auto relative z-10" },
+          React.createElement("div", { className: "grid grid-cols-1 lg:grid-cols-12 gap-12" },
+            React.createElement("div", { className: "lg:col-span-3" }, React.createElement(Reveal, null, React.createElement("span", { className: "text-xs font-bold tracking-widest uppercase text-gray-500" }, t(content.label, lang)), React.createElement("h2", { className: "text-3xl font-bold mt-4 leading-tight" }, t(content.headline, lang)))),
+            React.createElement("div", { className: "lg:col-span-1" }),
+            React.createElement("div", { className: "lg:col-span-8" }, React.createElement(Reveal, null, React.createElement("p", { className: "text-3xl md:text-4xl leading-[1.3] font-normal text-black tracking-tight" }, t(content.description, lang))))
+          )
+        )
+      );
+    };
+
+    // UPDATED: ServiceBlock uses new PlasmaContainer
+    const ServiceBlock = ({ item, lang }) => {
+      return React.createElement("div", { className: "relative w-full min-h-[60vh] flex items-center py-24 px-6 md:px-12 overflow-hidden group" },
+        React.createElement(PlasmaContainer, { colors: item.colors, colorsSecondary: item.colorsSecondary, image: item.image, imagePosition: item.imagePosition }),
+        React.createElement("div", { className: "container mx-auto relative z-10 pointer-events-none" },
+          React.createElement("div", { className: "grid grid-cols-1 lg:grid-cols-12 gap-12 pointer-events-auto" },
+            React.createElement("div", { className: "lg:col-span-6" }, React.createElement(Reveal, null, React.createElement("h2", { className: "text-5xl md:text-7xl font-bold tracking-tight mb-6 group-hover:text-black transition-colors" }, t(item.title, lang)), React.createElement("div", { className: "flex flex-wrap gap-2 mb-8" }, item.tags.map((tag, t) => React.createElement("span", { key: t, className: "text-sm font-bold border border-black/10 bg-white/70 backdrop-blur-sm px-4 py-2 rounded-full text-black" }, tag))))),
+            React.createElement("div", { className: "lg:col-span-6 flex flex-col justify-center" }, React.createElement(Reveal, null, React.createElement("p", { className: "text-2xl md:text-3xl leading-relaxed font-light text-gray-900" }, t(item.description, lang)), React.createElement("div", { className: "mt-8" }, React.createElement(ArrowRight, { className: "w-12 h-12 opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0 transition-all duration-500 text-black" }))))
+          )
+        )
+      );
+    };
+
+    const ServicesSections = ({ content, lang }) => {
+      return React.createElement("section", { id: "services" },
+        content.items.map((item, i) => React.createElement(ServiceBlock, { key: i, item: item, lang: lang }))
+      );
+    };
+
+    // NEW: CardBig with Radiant Holo Effect
+    const CardBig = ({ item, lang }) => {
+      const cardRef = useRef(null);
+
+      const handleMouseMove = (e) => {
+        if (!cardRef.current) return;
+        const rect = cardRef.current.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const w = rect.width;
+        const h = rect.height;
+
+        const rotateX = (1 - (y / h) * 2) * 7;
+        const rotateY = ((x / w) * 2 - 1) * 7;
+
+        cardRef.current.style.setProperty('--rx', `${rotateX}deg`);
+        cardRef.current.style.setProperty('--ry', `${rotateY}deg`);
+        cardRef.current.style.setProperty('--mx', `${(x / w) * 100}%`);
+        cardRef.current.style.setProperty('--my', `${(y / h) * 100}%`);
+        cardRef.current.style.setProperty('--bg-x', `${(x / w) * 100}%`);
+        cardRef.current.style.setProperty('--bg-y', `${(y / h) * 100}%`);
+        cardRef.current.style.setProperty('--o', '1');
+      };
+
+      const handleMouseLeave = () => {
+        if (!cardRef.current) return;
+        cardRef.current.style.setProperty('--rx', '0deg');
+        cardRef.current.style.setProperty('--ry', '0deg');
+        cardRef.current.style.setProperty('--o', '0');
+      };
+
+      return React.createElement("div", { onClick: item.onClick, className: "poke-card-container group cursor-pointer flex flex-col md:col-span-2", onMouseMove: handleMouseMove, onMouseLeave: handleMouseLeave },
+        React.createElement("div", { ref: cardRef, className: "poke-card relative overflow-hidden mb-6 w-full bg-gray-200 aspect-[21/10] rounded-lg" },
+          React.createElement(MediaItem, { src: item.media, alt: item.client, className: "absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 grayscale-[20%] group-hover:grayscale-0" }),
+          React.createElement("div", { className: "absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500" }),
+          React.createElement("div", { className: "poke-card-radiant" }),
+          React.createElement("div", { className: "poke-card-glare" }),
+          React.createElement("div", { className: "absolute bottom-0 left-0 p-8 md:p-12 text-white z-50 pointer-events-none" },
+            React.createElement("h4", { className: "text-3xl md:text-5xl font-bold mb-2 drop-shadow-lg" }, item.client),
+            React.createElement("p", { className: "text-xl md:text-2xl opacity-90 drop-shadow-md" }, t(item.title, lang))
+          )
+        )
+      );
+    };
+
+    // NEW: CardSmall with Radiant Holo Effect
+    const CardSmall = ({ item, lang }) => {
+      const cardRef = useRef(null);
+
+      const handleMouseMove = (e) => {
+        if (!cardRef.current) return;
+        const rect = cardRef.current.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const w = rect.width;
+        const h = rect.height;
+
+        const rotateX = (1 - (y / h) * 2) * 7;
+        const rotateY = ((x / w) * 2 - 1) * 7;
+
+        cardRef.current.style.setProperty('--rx', `${rotateX}deg`);
+        cardRef.current.style.setProperty('--ry', `${rotateY}deg`);
+        cardRef.current.style.setProperty('--mx', `${(x / w) * 100}%`);
+        cardRef.current.style.setProperty('--my', `${(y / h) * 100}%`);
+        cardRef.current.style.setProperty('--bg-x', `${(x / w) * 100}%`);
+        cardRef.current.style.setProperty('--bg-y', `${(y / h) * 100}%`);
+
+        cardRef.current.style.setProperty('--o', '1');
+      };
+
+      const handleMouseLeave = () => {
+        if (!cardRef.current) return;
+        cardRef.current.style.setProperty('--rx', '0deg');
+        cardRef.current.style.setProperty('--ry', '0deg');
+        cardRef.current.style.setProperty('--o', '0');
+      };
+
+      return React.createElement("div", { onClick: item.onClick, className: "poke-card-container group cursor-pointer flex flex-col", onMouseMove: handleMouseMove, onMouseLeave: handleMouseLeave },
+        React.createElement("div", { ref: cardRef, className: "poke-card relative overflow-hidden mb-6 w-full bg-gray-200 aspect-[4/3] rounded-lg" },
+          React.createElement(MediaItem, { src: item.media, alt: item.client, className: "absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 grayscale-[20%] group-hover:grayscale-0" }),
+          React.createElement("div", { className: "absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-500" }),
+          React.createElement("div", { className: "poke-card-radiant" }),
+          React.createElement("div", { className: "poke-card-glare" })
+        ),
+        React.createElement("div", { className: "flex justify-between items-end px-2" },
+          React.createElement("div", null,
+            React.createElement("h4", { className: "text-xl font-bold text-gray-900 mb-1" }, item.client),
+            React.createElement("p", { className: "text-2xl font-light text-gray-600 group-hover:text-[var(--brand-blue)] transition-colors" }, t(item.title, lang))
+          ),
+          React.createElement("div", { className: "w-12 h-12 rounded-full border border-gray-300 flex items-center justify-center group-hover:bg-black group-hover:border-black group-hover:text-white transition-all duration-300 bg-white/80 backdrop-blur" },
+            React.createElement(Plus, { className: "w-6 h-6" })
+          )
+        )
+      );
+    };
+
+    const SectionWorkWrapper = ({ content, backgroundColors, lang }) => {
+      return React.createElement("section", { id: "work", className: "py-32 px-6 md:px-12 relative overflow-hidden" },
+        React.createElement(PlasmaContainer, { colors: backgroundColors }), // USING NEW COMPONENT
+        React.createElement("div", { className: "container mx-auto relative z-10" },
+          React.createElement(Reveal, null,
+            React.createElement("div", { className: "flex flex-col md:flex-row justify-between items-end mb-20" },
+              React.createElement("div", null,
+                React.createElement("span", { className: "text-xs font-bold tracking-widest uppercase text-gray-500 mb-3 block" }, t(content.label, lang)),
+                React.createElement("h2", { className: "text-5xl md:text-6xl font-bold tracking-tight" }, t(content.headline, lang))
+              ),
+              React.createElement("a", { href: "#", className: "hidden md:flex items-center font-bold hover:text-[var(--brand-blue)] transition-colors mt-4 md:mt-0 text-lg" },
+                t(content.linkText, lang), React.createElement(ArrowRight, { className: "ml-2 w-5 h-5" })
+              )
+            )
+          ),
+          React.createElement("div", { className: "grid grid-cols-1 md:grid-cols-2 gap-8" },
+            content.cards.map((card, i) => card.component === 'CardBig' ? React.createElement(CardBig, { key: i, item: card, lang: lang }) : React.createElement(CardSmall, { key: i, item: card, lang: lang }))
+          )
+        )
+      );
+    };
+
+    const BigNumberList = ({ content, lang }) => {
+      return React.createElement("section", { className: "bg-black text-white py-32 px-6 md:px-12 relative" },
+        React.createElement("div", { className: "container mx-auto relative z-10" },
+          React.createElement(Reveal, null,
+            React.createElement("div", { className: "mb-20" },
+              React.createElement("span", { className: "text-xs font-bold tracking-widest uppercase text-gray-400 mb-4 block" }, t(content.label, lang)),
+              React.createElement("h2", { className: "text-5xl md:text-7xl font-bold" }, t(content.headline, lang))
+            )
+          ),
+          React.createElement("div", { className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12" },
+            content.items.map((item, i) => React.createElement("div", { key: i },
+              React.createElement("span", { className: "text-6xl md:text-7xl font-bold block mb-4 text-[var(--brand-blue)]" }, item.number),
+              React.createElement("span", { className: "text-xl font-medium text-gray-400" }, t(item.label, lang))
+            ))
+          )
+        )
+      );
+    };
+
+    const NewsletterBlock = ({ content, lang }) => {
+      return React.createElement("section", { className: "py-24 px-6 md:px-12 bg-[var(--brand-gray)]" },
+        React.createElement("div", { className: "container mx-auto max-w-4xl text-center" },
+          React.createElement(Reveal, null,
+            React.createElement("h3", { className: "text-4xl font-bold mb-4" }, t(content.headline, lang)),
+            React.createElement("p", { className: "text-gray-600 mb-8 text-lg" }, t(content.subheadline, lang))
+          ),
+          React.createElement("div", { className: "flex flex-col sm:flex-row gap-4 justify-center" },
+            React.createElement("input", { type: "email", placeholder: t(content.placeholder, lang), className: "px-6 py-4 rounded-full border border-gray-300 w-full sm:w-96 focus:outline-none focus:border-black" }),
+            React.createElement("button", { className: "bg-black text-white px-8 py-4 rounded-full font-bold hover:bg-[var(--brand-blue)] transition-colors" }, t(content.button, lang))
+          )
+        )
+      );
+    };
+
+    const Footer = ({ content, global, lang }) => {
+      return React.createElement("footer", { id: "contact", className: "bg-white pt-32 px-6 md:px-12 relative" },
+        React.createElement("div", { className: "container mx-auto" },
+          React.createElement("div", { className: "grid grid-cols-1 lg:grid-cols-2 gap-16 mb-40" },
+            React.createElement("div", null,
+              React.createElement(Reveal, null,
+                React.createElement("h2", { className: "text-6xl md:text-8xl font-bold tracking-tight mb-10 leading-[0.9]" }, t(content.headline, lang)),
+                React.createElement("p", { className: "text-2xl md:text-3xl text-gray-500 max-w-xl mb-16 font-light" }, t(content.subheadline, lang))
+              ),
+              React.createElement("div", { className: "flex flex-wrap gap-6" },
+                React.createElement("button", { className: "bg-[var(--brand-blue)] text-white px-10 py-5 rounded-full text-xl font-bold hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl inline-flex items-center transform hover:-translate-y-1" },
+                  t(content.primaryBtn, lang), React.createElement(ArrowUpRight, { className: "ml-3 w-6 h-6" })
+                ),
+                React.createElement("button", { className: "bg-transparent text-black border-2 border-gray-200 px-10 py-5 rounded-full text-xl font-bold hover:border-black transition-colors" },
+                  t(content.secondaryBtn, lang)
+                )
+              )
+            ),
+            React.createElement("div", { className: "flex flex-col justify-end lg:items-end text-right" },
+              React.createElement("a", { href: `mailto:${global.contactEmail}`, className: "text-3xl md:text-5xl font-bold hover:text-[var(--brand-blue)] transition-colors mb-12 block tracking-tight" }, global.contactEmail),
+              React.createElement("address", { className: "text-gray-500 not-italic text-xl leading-relaxed whitespace-pre-line mb-16 font-light" }, t(global.address, lang))
+            )
+          )
+        )
+      );
+    };
+
+    // ----------------------------------------------------------------------
+    // 4. APP RENDER
+    // ----------------------------------------------------------------------
+    // ----------------------------------------------------------------------
+    // NEW COMPONENT: ProjectPage (Gradient Height Fixed)
+    // ----------------------------------------------------------------------
+    const ProjectPage = ({ id, data, lang, onBack }) => {
+      useEffect(() => {
+        window.scrollTo(0, 0);
+      }, [id]);
+
+      if (!data) return null;
+
+      return React.createElement(
+        "div",
+        { className: "min-h-screen bg-white animate-in fade-in duration-500 relative" },
+
+        // =======================================================
+        // HERO WRAPPER
+        // This box contains the Gradient, Title, and Image.
+        // The gradient height is calculated as 70% of THIS box.
+        // =======================================================
+        React.createElement(
+          "div",
+          { className: "relative w-full mb-40" }, // Margin bottom moves here
+
+          // 1. THE GRADIENT (70% of this wrapper's height)
+          React.createElement("div", {
+            className: "absolute top-0 left-0 w-full h-[80%] pointer-events-none z-0",
+            style: {
+              backgroundImage: "url('./gradient-hero-project.jpg')",
+              backgroundSize: "cover",
+              backgroundPosition: "top center",
+              backgroundRepeat: "no-repeat",
+            },
+          }),
+
+          // 2. SPACER (Keeps content below navbar)
+          React.createElement("div", { className: "h-40 relative z-10" }),
+
+          // 3. TITLE BLOCK
+          React.createElement(
+            PageWrapper,
+            { className: "mb-[96px] text-center relative z-10" },
+            React.createElement(
+              Reveal,
+              null,
+              React.createElement("p", { className: "text-base md:text-xl font-medium text-[#ff5900] mb-5" }, data.client),
+              React.createElement("h1", { className: "text-5xl md:text-[80px] lg:text-8xl font-semibold tracking-[-0.02em] leading-[0.9] text-black" }, data.title)
+            )
+          ),
+
+          // 4. HERO IMAGE (Restored to exactly how you had it)
+          React.createElement(
+            PageWrapper,
+            { className: "relative z-10" },
+            React.createElement(
+              Reveal,
+              null,
+              React.createElement(
+                "div",
+                // Original classes restored (aspect-square, etc.)
+                { className: "w-full aspect-square md:aspect-[16/9] bg-gray-100 overflow-hidden rounded-none shadow-sm" },
+                React.createElement("img", {
+                  src: data.heroImage,
+                  className: "w-full h-full object-cover",
+                  alt: "Hero Project Image",
+                })
+              )
+            )
+          )
+        ),
+        // =======================================================
+        // END HERO WRAPPER
+        // =======================================================
+
+        // -------------------------------------------------------
+        // THE REST OF THE CONTENT (Takeaways, Challenge, etc.)
+        // -------------------------------------------------------
+        React.createElement(
+          PageWrapper,
+          { className: "mb-40 relative z-10" },
+
+          // SECTION A: KEY TAKEAWAYS
+          data.takeaways &&
+          React.createElement(
+            "div",
+            { className: "mb-32 md:mb-48" },
+            React.createElement("h3", { className: "text-[32px] md:text-[40px] lg:text-[56px] xl:text-[64px] leading-[1] font-semibold tracking-tight mb-16" }, "Key takeaways"),
+            React.createElement(
+              "div",
+              { className: "grid grid-cols-1 md:grid-cols-3 gap-12" },
+              data.takeaways.map((item, i) =>
+                React.createElement(
+                  "div",
+                  { key: i },
+                  React.createElement("span", { className: "text-4xl md:text-5xl text-[#39aa59] font-semibold block mb-6" }, item.number),
+                  React.createElement("p", { className: "text-xl text-gray-500 font-medium" }, item.text)
+                )
+              )
+            )
+          ),
+
+          // SECTION B: CHALLENGE
+          React.createElement(
+            "div",
+            { className: "grid grid-cols-1 md:grid-cols-12 gap-y-8 gap-x-12 mb-32 md:mb-48" },
+            React.createElement("div", { className: "md:col-span-4" }, React.createElement("h3", { className: "text-3xl md:text-5xl font-semibold tracking-tight sticky top-32" }, "Challenge")),
+            React.createElement("div", { className: "md:col-span-8" }, React.createElement("p", { className: "text-[24px] leading-[34px] tracking-[0.01em] text-[#7b7b80] font-medium whitespace-pre-line" }, t(data.challenge, lang)))
+          ),
+
+          // SECTION C: APPROACH
+          data.approach &&
+          React.createElement(
+            "div",
+            { className: "grid grid-cols-1 md:grid-cols-12 gap-y-8 gap-x-12 mb-32 md:mb-48" },
+            React.createElement("div", { className: "md:col-span-4" }, React.createElement("h3", { className: "text-3xl md:text-5xl font-semibold tracking-tight sticky top-32" }, "Approach")),
+            React.createElement("div", { className: "md:col-span-8" }, React.createElement("p", { className: "text-[24px] leading-[34px] tracking-[0.01em] text-[#7b7b80] font-medium whitespace-pre-line" }, t(data.approach, lang))),
+
+          ),
+
+          // SECTION D: SOLUTION
+          React.createElement(
+            "div",
+            { className: "grid grid-cols-1 md:grid-cols-12 gap-y-8 gap-x-12 mb-32" },
+            React.createElement("div", { className: "md:col-span-4" }, React.createElement("h3", { className: "text-3xl md:text-5xl font-semibold tracking-tight sticky top-32" }, "Solution")),
+            React.createElement("div", { className: "md:col-span-8" }, React.createElement("p", { className: "text-[24px] leading-[34px] tracking-[0.01em] text-[#7b7b80] font-medium whitespace-pre-line" }, t(data.solution, lang)))
+          ),
+
+          // SECTION E: PROJECT INFO (Updated for Mobile Layout)
+          React.createElement(
+            "div",
+            { className: "mt-32 pt-16 w-full" },
+            React.createElement(
+              "div",
+              {
+                // CHANGE 1: grid-cols-2 allows items to sit side-by-side on mobile.
+                // gap-y-6 is tighter for mobile.
+                className: "grid grid-cols-2 md:grid-cols-12 gap-y-6 gap-x-6 items-end"
+              },
+
+              // 1. Service
+              React.createElement("div", { className: "col-span-1 md:col-span-2" }, // Takes 1 slot on mobile
+                // CHANGE 2: text-[18px] for mobile, text-xl for desktop
+                React.createElement("h4", { className: "text-[18px] md:text-xl font-bold text-black mb-1 md:mb-2" }, "Service"),
+                // CHANGE 3: text-sm (14px) for mobile, text-lg for desktop
+                React.createElement("span", { className: "text-sm md:text-lg text-gray-500 font-semibold block" }, data.category || "Digital Product")
+              ),
+
+              // 2. Client
+              React.createElement("div", { className: "col-span-1 md:col-span-2" }, // Takes 1 slot on mobile
+                React.createElement("h4", { className: "text-[18px] md:text-xl font-bold text-black mb-1 md:mb-2" }, "Client"),
+                React.createElement("span", { className: "text-sm md:text-lg text-gray-500 font-semibold block" }, data.client)
+              ),
+
+              // 3. Button
+              // On mobile, this spans 2 columns (full width) so it sits comfortably below the info.
+              // On desktop (md), it moves to the right side (col-start-9).
+              React.createElement("div", { className: "col-span-2 md:col-span-4 md:col-start-9 flex justify-start md:justify-end" },
+                React.createElement(
+                  "a",
+                  {
+                    href: "#contact",
+                    className: "inline-flex items-center justify-center px-8 py-4 bg-[#39aa59] text-white text-lg font-bold rounded-none hover:shadow-[inset_0_0_0_4px_#E0E0E0] transition-all whitespace-nowrap w-full md:w-auto"
+                  },
+                  "Get in touch!",
+                  React.createElement(ArrowRight, { className: "ml-3 w-5 h-5" })
+                )
+              )
+            )
+          )),
+
+        // FOOTER
+        React.createElement(
+          "div",
+          { className: "bg-[#F4F4F4] py-32 text-center relative z-10" },
+          React.createElement(
+            PageWrapper,
+            null,
+            React.createElement("h2", { className: "text-4xl md:text-6xl font-bold mb-12 tracking-tight" }, "Ready to make an impact?"),
+            React.createElement(
+              "div",
+              { className: "flex justify-center gap-6" },
+              React.createElement("button", { onClick: onBack, className: "px-8 py-4 border-2 border-black rounded-full font-bold hover:bg-black hover:text-white transition-all" }, "Back to Overview"),
+              React.createElement("a", { href: "#contact", className: "px-8 py-4 bg-[var(--brand-blue)] text-white rounded-full font-bold hover:bg-blue-600 transition-all shadow-lg" }, "Get in Touch")
+            )
+          )
+        )
+      );
+    };
+    // ----------------------------------------------------------------------
+    // 3. UPDATED APP COMPONENT (The Switch Logic)
+    // ----------------------------------------------------------------------
+    const App = () => {
+      const { navigation, global, page, projects } = cmsData;
+      const [currentLang, setLang] = useState('en');
+
+      // ROUTING STATE: 'home' or the ID of a project (e.g., 'reply')
+      const [activePage, setActivePage] = useState('home');
+
+      return React.createElement("div", { className: "bg-white min-h-screen" },
+        // Navbar (Updated: passing activePage so we can underline 'Work')
+        React.createElement(NavbarNew, {
+          items: navigation,
+          siteName: global.siteName,
+          currentLang: currentLang,
+          setLang: setLang,
+          activePage: activePage, // <--- This sends the info!
+          isDark: activePage !== 'home',
+          onNavigate: (id) => { setActivePage(id); window.scrollTo(0, 0); }
+        }),
+
+        React.createElement("main", null,
+          // THE SWITCH: Check if we are on 'home' or a project page
+          activePage === 'home'
+            ?
+            // CASE A: Render Home Page Sections
+            page.sections.map((section) => {
+
+              // SPECIAL LOGIC: Inject click handlers into the 'Work' section
+              if (section.id === 'work') {
+                return React.createElement(SectionWorkWrapper, {
+                  key: section.id,
+                  content: {
+                    ...section.content,
+                    cards: section.content.cards.map(c => {
+                      // Map client names to project IDs so we know which page to open
+                      let targetId = null;
+                      if (c.client === 'Re:Ply (AI)') targetId = 'reply';
+                      if (c.client === 'Damen') targetId = 'smart-sailing';
+                      if (c.client === 'Lightyear') targetId = 'driving-delight';
+
+                      // Add the click handler to the card data
+                      return targetId ? { ...c, onClick: () => setActivePage(targetId) } : c;
+                    })
+                  },
+                  backgroundColors: section.backgroundColors,
+                  lang: currentLang
+                });
+              }
+
+              // Render other sections normally
+              switch (section.type) {
+                case 'HeroCarousel': return React.createElement(HeroCarousel, { key: section.id, content: section.content, lang: currentLang });
+                case 'ServicesOverview': return React.createElement(ServicesOverview, { key: section.id, content: section.content, backgroundColors: section.backgroundColors, lang: currentLang });
+                case 'ServicesSections': return React.createElement(ServicesSections, { key: section.id, content: section.content, lang: currentLang });
+                case 'BigNumberList': return React.createElement(BigNumberList, { key: section.id, content: section.content, lang: currentLang });
+                case 'NewsletterBlock': return React.createElement(NewsletterBlock, { key: section.id, content: section.content, lang: currentLang });
+                case 'Footer': return React.createElement(Footer, { key: section.id, content: section.content, global: global, lang: currentLang });
+                default: return null;
+              }
+            })
+            :
+            // CASE B: Render Project Page Template
+            React.createElement(ProjectPage, {
+              id: activePage,
+              data: projects[activePage],
+              lang: currentLang,
+              onBack: () => setActivePage('home')
+            })
+        )
+      );
+    };
+    const root = createRoot(document.getElementById('root'));
+    root.render(React.createElement(App));
+  </script>
+</body>
+
+</html>
